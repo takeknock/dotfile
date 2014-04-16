@@ -1,0 +1,41 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: resume
+# key: resume
+# --
+\documentclass[a4paper, 11pt]{jarticle}
+%\documentclass[14pt, dvips, handout]{beamer}
+\usepackage{amsmath,amssymb}
+\usepackage[framed,thmmarks]{ntheorem}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{ascmac}
+\usepackage{fancybx}
+ \usepackage[dvips]{graphicx}
+ \usepackage{multicol}
+ \usepackage{latexsym}%証明終了の記号書けるようにする
+\def\qed{\hfill $\Box$}%証明終了の記号書けるようにする
+ \usepackage{centernot}%rightarrowにnotの斜め線入れるため．
+ 
+\newtheorem{Def}{定義}[section]
+\newtheorem{Theorem}{定理}[section]
+\newtheorem{Lemma}{補題}[section]
+\newtheorem{Proof}{証明}[section]
+\newtheorem{cor}{系}[section]
+\newtheorem{prop}{命題}[section]
+\usepackage[top=20truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+
+\begin{document}
+
+\title{$1}
+\author{$2}
+\maketitle
+
+\tableofcontentsd
+
+%\setcounter{Theorem}{5.6.5}
+%\setcounter{Proof}{}
+%\setcounter{Prop}{}
+
+\section{$0}
+
+\end{document}

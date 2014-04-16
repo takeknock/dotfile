@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: cpt1
+# key: cpt1
+# --
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;

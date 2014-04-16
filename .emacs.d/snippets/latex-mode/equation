@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: equation
+# key: eq
+# --
+\begin{equation}
+	$0 \nonumber
+\end{equation}
