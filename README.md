@@ -1,0 +1,1 @@
+yasnippetに関しては、それぞれの環境にdotfileをcloneした後に、githubのyasnippetのプロジェクトから取ってくること
