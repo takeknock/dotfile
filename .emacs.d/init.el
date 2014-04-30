@@ -8,6 +8,12 @@
 (setq-default buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;;バックアップファイル作らない系
+; *.~ とかのを作らない
+(setq make-backup-files nil)
+; .#* とかのを作らない
+(setq auto-save-default nil)
+
 ;モードラインに行番号表示
 (column-number-mode t)
 ;タブの表示幅
@@ -51,7 +57,11 @@
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets" ;自作スニペット置くとこ
         "~/.emacs.d/elisp/yasnippet/snippets";デフォルトのスニペット置き場
+		"~/.emacs/elisp/yasnippet/yasmate/snippets" ;; the yasmate collection
 ))
+;(add-to-list 'yas/root-directory "");AndreaCrotti's snippet
+;(yas/initialize)
+
 ;global-modeで起動
 (yas-global-mode 1)
 ;TABキーで展開する
