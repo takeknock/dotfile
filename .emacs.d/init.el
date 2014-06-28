@@ -27,6 +27,69 @@
 ;(set-frame-height (next-frame) 40)
 ;(set-frame-width (next-frame) 70)
 
+ (setq gdb-many-windows t)
+; (setq gdb-use-separate-io-buffer nil)
+(setq gdb-use-separate-io-buffer t) ; "IO buffer" が必要ない場合は  nil で
+
+;;自動で色を付ける設定(http://at-aka.blogspot.jp/2006/12/emacs-c.html)
+(global-font-lock-mode t)
+;;C-c C-qで関数全体のインデント
+;C-c C-q(c-indent-defun)
+
+;;自動インデントの設定
+;C言語
+(add-hook 'c-mode-common-hook
+		  '(lambda()
+			 ;;センテンスの終了の';'を入力したら、自動改行+インデント
+			 (c-toggle-auto-hungry-state 1)
+			 ;;RETで自動改行+インデント
+			 (define-key c-mode-base-map "\C-m" 'newline-and-indent)
+))
+;C++
+(add-hook 'c++-mode-common-hook
+		  '(lambda()
+			 ;;センテンスの終了の';'を入力したら、自動改行+インデント
+			 (c-toggle-auto-hungry-state 1)
+			 ;;RETで自動改行+インデント
+			 (define-key c-mode-base-map "\C-m" 'newline-and-indent)
+))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;GNU GLOBAL (gtags)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;gtags(http://d.hatena.ne.jp/Nos/20120723/1343204409)
+; パスを通す、パッケージで入れると最初からパスが通ってていらないかもしれない
+;(load "/usr/local/share/gtags/gtags.el");←elispフォルダにgtags.elコピーした
+; cとc++で自動でonに
+(add-hook 'c-mode-common-hook
+          '(lambda()
+             (gtags-mode 1)
+             ))
+(add-hook 'c++-mode-hook
+          '(lambda()
+             (gtags-mode 1)
+             ))
+;ジャンプ先が複数あった場合の選択画面の見た目
+(add-hook 'gtags-select-mode-hook
+  '(lambda ()
+     (setq hl-line-face 'underline)
+     (hl-line-mode 1)
+))
+;M-t gtagsでジャンプする1つ前に戻る(http://uguisu.skr.jp/Windows/gtags.html)
+;M-s 指定した変数、定義の定義元を探す
+;M-r 指定した関数が参照されている部分を探す
+;C-t指定した関数が定義されている部分を探す
+(autoload 'gtags-mode "gtags" "" t)
+(setq gtags-mode-hook
+      '(lambda ()
+         (local-set-key "\M-t" 'gtags-find-tag)
+         (local-set-key "\M-r" 'gtags-find-rtag)
+         (local-set-key "\M-s" 'gtags-find-symbol)
+         (local-set-key "\C-t" 'gtags-pop-stack)
+         ))
+
+
+
 ;;cl-libエラーへの対処（http://stackoverflow.com/questions/20678847/cannot-load-cl-lib-at-emacs-startup）
 (add-to-list 'load-path "~/.emacs.d/elisp/cl-lib/")
 (require 'cl-lib)
