@@ -16,10 +16,7 @@ alias codevs='javaws ~/Downloads/codevs3.jnlp'
 alias ls='ls -a'
 alias gcc='CC=/usr/local/bin/gcc-4.8 gcc'
 #alias gvim='~/.vim/gvim.sh'
-#alias kvim='open -a MacVim'
-export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
-alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+alias kvim='open -a MacVim'
 
 #export CFLAGS="-arch x86_64 -arch i386"
 #export LDFLAGS="-arch x86_64 -arch i386"
