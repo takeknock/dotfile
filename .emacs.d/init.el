@@ -1,4 +1,4 @@
-;;基本設定
+v;;基本設定
 (set-language-environment 'Japanese);言語を日本語に
 
 (set-default-coding-systems 'utf-8);UTF-8
