@@ -20,6 +20,8 @@ NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'Shougo/neocomplete.vim'
 "git
 NeoBundle 'tpope/vim-fugitive'
+"zen-coding
+NeoBundle 'mattn/zencoding-vim' 
 
 "GitHub以外のGitリポジトリにあるプラグインを利用する
 NeoBundle 'git://git.wincent.com/command-t.git'
