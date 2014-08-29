@@ -24,7 +24,7 @@ alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"
 #export CFLAGS="-arch x86_64 -arch i386"
 #export LDFLAGS="-arch x86_64 -arch i386"
 #export CXXFLAGS="-arch x86_64 -arch i386"
-PS1="(´・∀・｀):\w \$ "
+PS1="(´・∀・｀):\[\033[36m\]\t\[\033[0m\] \W $"
 #PS1="yamazaki(仮):\w \$ "
 
 alias git="/Applications/Xcode.app/Contents/Developer/usr/bin/git"
