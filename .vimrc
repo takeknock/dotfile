@@ -20,8 +20,14 @@ NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'Shougo/neocomplete.vim'
 "git
 NeoBundle 'tpope/vim-fugitive'
-"zen-coding
+"Emmet(zen-coding)
 NeoBundle 'mattn/emmet-vim' 
+"TwitVim
+NeoBundle 'vim-scripts/TwitVim'
+let twitvim_browser_cmd = 'open' " for Mac
+let twitvim_force_ssl = 1 
+let twitvim_count = 40
+
 
 "GitHub以外のGitリポジトリにあるプラグインを利用する
 NeoBundle 'git://git.wincent.com/command-t.git'
