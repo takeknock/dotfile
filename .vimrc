@@ -4,6 +4,8 @@ if has('vim_starting')
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
+"Vimを使ってくれてありがとうを表示しない
+set notitle
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -13,11 +15,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
 "NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'Shougo/neocomplete.vim'
 "git
 NeoBundle 'tpope/vim-fugitive'
 "Emmet(zen-coding)
@@ -59,15 +59,9 @@ endif
 NeoBundle "Shougo/neosnippet.vim"
 NeoBundle "Shougo/neosnippet-snippets"
 
-" unite.vim
-NeoBundle "Shougo/unite.vim"
 
 " アウトラインの出力
 NeoBundle "Shougo/unite-outline"
-
-
-" C++ のシンタックス
-NeoBundle "vim-jp/cpp-vim"
 
 " wandbox
 NeoBundle "rhysd/wandbox-vim"
@@ -75,21 +69,22 @@ NeoBundle "rhysd/wandbox-vim"
 " コード補完
 NeoBundle "osyo-manga/vim-marching"
 
-" コードの実行
-NeoBundle "thinca/vim-quickrun"
 
 NeoBundle "jceb/vim-hier"
 
 " quickfix の該当箇所の内容をコマンドラインに出力
- NeoBundle "dannyob/quickfixstatus"
+NeoBundle "dannyob/quickfixstatus"
 "
- " シンタックスチェッカー
- NeoBundle "osyo-manga/vim-watchdogs"
- NeoBundle "osyo-manga/shabadou.vim"
+" シンタックスチェッカー
+" NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle "osyo-manga/shabadou.vim"
 
 
- " ハイライト
- NeoBundle "t9md/vim-quickhl"
+" ハイライト
+NeoBundle "t9md/vim-quickhl"
+
+"vim-latex
+NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
 
 " add plugins
 filetype plugin on
@@ -118,7 +113,10 @@ setlocal tabstop=3
 setlocal shiftwidth=3
 
 " 空白文字ではなくてタブ文字を使用する
-setlocal noexpandtab
+"setlocal noexpandtab
+set expandtab
+set tabstop=2
+
 
 "http://d.hatena.ne.jp/osyo-manga/20131219/1387465034
 " Vim で C++ の設定例
@@ -149,13 +147,13 @@ function! s:cpp()
 	highlight link boost_pp cppStatement
 
 	" quickrun.vim の設定
-	let b:quickrun_config = {
-				\		"hook/add_include_option/enable" : 1
-				\	}
+	"let b:quickrun_config = {
+	"			\		"hook/add_include_option/enable" : 1
+	"			\	}
 
-	if exists("*CppVimrcOnFileType_cpp")
-		call CppVimrcOnFileType_cpp()
-	endif
+	"if exists("*CppVimrcOnFileType_cpp")
+	"	call CppVimrcOnFileType_cpp()
+	"endif
 	"文脈を考慮した賢い補完
 	"（http://rhysd.hatenablog.com/entry/2013/12/10/233201#neosnippet）
 	"if !exists('g:neocomplete#force_omni_input_patterns')
@@ -213,9 +211,9 @@ NeoBundleLazy 'basyura/unite-rails', {
 			\   ]
 			\ }}
 
-NeoBundleLazy 'taka84u9/vim-ref-ri', {
-			\ 'depends': ['Shougo/unite.vim', 'thinca/vim-ref'],
-			\ 'autoload': { 'filetypes': g:my.ft.ruby_files } }
+"NeoBundleLazy 'taka84u9/vim-ref-ri', {
+"			\ 'depends': ['Shougo/unite.vim', 'thinca/vim-ref'],
+"			\ 'autoload': { 'filetypes': g:my.ft.ruby_files } }
 
 NeoBundleLazy 'alpaca-tc/neorspec.vim', {
 			\ 'depends' : ['alpaca-tc/vim-rails', 'tpope/vim-dispatch'],
@@ -235,16 +233,15 @@ NeoBundleLazy 'tsukkee/unite-tag', {
 			\   'unite_sources' : ['tag', 'tag/file', 'tag/include']
 			\ }}
 
-unction! ExecuteCurrentFile()
-if &filetype == 'php' || &filetype == 'ruby'
-	execute '!' . &filetype . ' %'
-endif
-ndfunction
+function! ExecuteCurrentFile()
+	if &filetype == 'php' || &filetype == 'ruby'
+		execute '!' . &filetype . ' %'
+	endif
+endfunction
 noremap <Space> :call ExecuteCurrentFile()<CR>
 
-
-C++のプラグインの設定
-プラグインの設定
+"https://github.com/osyo-manga/cpp-vimrc/blob/master/vimrcより
+" プラグインの設定
 " これはプラグインが読み込まれた場合に有効になる
 
 " caw.vim
@@ -266,770 +263,245 @@ unlet s:hooks
 
 
 " neocomplet.vim
-let s:hooks =
-neobundle#get_hooks("neocomplete.vim")
+let s:hooks = neobundle#get_hooks("neocomplete.vim")
 function! s:hooks.on_source(bundle)
 	" 補完を有効にする
 	let g:neocomplete#enable_at_startup = 1
 
 	" 補完に時間がかかってもスキップしない
-	let
-	g:neocomplete#skip_auto_completion_time
-	= ""
+	let g:neocomplete#skip_auto_completion_time = ""
 endfunction
 unlet s:hooks
 
 
 " neocomplcache
-let s:hooks =
-neobundle#get_hooks("neocomplcache")
+let s:hooks = neobundle#get_hooks("neocomplcache")
 function! s:hooks.on_source(bundle)
 	" 補完を有効にする
-	let
-	g:neocomplcache_enable_at_startup=1
+	let g:neocomplcache_enable_at_startup=1
 endfunction
 unlet s:hooks
 
 
 " quickfixstatus
-let s:hooks =
-neobundle#get_hooks("quickfixstatus")
-function!
-	s:hooks.on_post_source(bundle)
+let s:hooks = neobundle#get_hooks("quickfixstatus")
+function! s:hooks.on_post_source(bundle)
 	QuickfixStatusEnable
 endfunction
 unlet s:hooks
 
 
 " vim-quickhl
-let s:hooks =
-neobundle#get_hooks("vim-quickhl")
-function!
-	s:hooks.on_source(bundle)
-	" <Space>m でカーソル下の単
-	語、もしくは選択した範囲の
-	ハイライトを行う
-	" 再度 <Space>m を行うと
-	カーソル下のハイライトを
-	解除する
-	" これは複数の単語の
-	ハイライトを行う事も
-	できる
-	" <Space>M で全て
-	のハイライトを解除
-	する
-	nmap <Space>m
-	<Plug>(quickhl-manual-this)
-	xmap
-	<Space>m
-	<Plug>(quickhl-manual-this)
-	nmap
-	<Space>M
-	<Plug>(quickhl-manual-reset)
-	xmap
-	<Space>M
-	<Plug>(quickhl-manual-reset)
+let s:hooks = neobundle#get_hooks("vim-quickhl")
+function! s:hooks.on_source(bundle)
+	" <Space>m でカーソル下の単語、もしくは選択した範囲のハイライトを行う
+	" 再度 <Space>m を行うとカーソル下のハイライトを解除する
+	" これは複数の単語のハイライトを行う事もできる
+	" <Space>M で全てのハイライトを解除する
+	nmap <Space>m <Plug>(quickhl-manual-this)
+	xmap <Space>m <Plug>(quickhl-manual-this)
+	nmap <Space>M <Plug>(quickhl-manual-reset)
+	xmap <Space>M <Plug>(quickhl-manual-reset)
 endfunction
-unlet
-s:hooks
+unlet s:hooks
 
 
-"
-neosnippet.vim
-let
-s:hooks
-=
-neobundle#get_hooks("neosnippet.vim")
-function!
-	s:hooks.on_source(bundle)
-	"
-	ス
-	ニ
-	ペッ
-	ト
-	を
-	展
-	開
-	す
-	る
-	キー
-	マッ
-	ピ
-	ン
-	グ
-	"
-	<Tab>
-	で
-	選
-	択
-	さ
-	れ
-	て
-	い
-	る
-	ス
-	ニ
-	ペッ
-	ト
-	の
-	展
-	開
-	を
-	行
-	う
-	"
-	選
-	択
-	さ
-	れ
-	て
-	い
-	る
-	候
-	補
-	が
-	ス
-	ニ
-	ペッ
-	ト
-	で
-	あ
-	れ
-	ば
-	展
-	開
-	し、
-	"
-	そ
-	れ
-	以
-	外
-	で
-	あ
-	れ
-	ば
-	次
-	の
-	候
-	補
-	を
-	選
-	択
-	す
-	る
-	"
-	ま
-	た、
-	既
-	に
-	ス
-	ニ
-	ペッ
-	ト
-	が
-	展
-	開
-	さ
-	れ
-	て
-	い
-	る
-	場
-	合
-	は
-	次
-	の
-	マー
-	ク
-	へ
-	と
-	移
-	動
-	す
-	る
-	imap
-	<expr><TAB>
-	neosnippet#expandable_or_jumpable()
-	?
-				\
-	"\<Plug>(neosnippet_expand_or_jump)"
-				\:
-	pumvisible()
-	?
-	"\<C-n>"
-	:
-	"\<TAB>"
-	smap
-	<expr><TAB>
-	neosnippet#expandable_or_jumpable()
-	?
-				\
-	"\<Plug>(neosnippet_expand_or_jump)"
-				\:
-	"\<TAB>"
+" neosnippet.vim
+let s:hooks = neobundle#get_hooks("neosnippet.vim")
+function! s:hooks.on_source(bundle)
+	" スニペットを展開するキーマッピング
+	" <Tab> で選択されているスニペットの展開を行う
+	" 選択されている候補がスニペットであれば展開し、
+	" それ以外であれば次の候補を選択する
+	" また、既にスニペットが展開されている場合は次のマークへと移動する
+	imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+				\ "\<Plug>(neosnippet_expand_or_jump)"
+				\: pumvisible() ? "\<C-n>" : "\<TAB>"
+	smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+				\ "\<Plug>(neosnippet_expand_or_jump)"
+				\: "\<TAB>"
 
-	let
-	g:neosnippet#snippets_directory
-	=
-	"~/.neosnippet"
+	let g:neosnippet#snippets_directory = "~/.neosnippet"
 
-	"
-	現
-	在
-	の
-	filetype
-	の
-	ス
-	ニ
-	ペッ
-	ト
-	を
-	編
-	集
-	す
-	る
-	為
-	の
-	キー
-	マッ
-	ピ
-	ン
-	グ
-	"
-	こ
-	う
-	し
-	て
-	お
-	く
-	こ
-	と
-	で
-	サッ
-	と
-	編
-	集
-	や
-	追
-	加
-	な
-	ど
-	を
-	行
-	う
-	こ
-	と
-	が
-	で
-	き
-	る
-	"
-	以
-	下
-	の
-	設
-	定
-	で
-	は
-	新
-	し
-	い
-	タ
-	ブ
-	で
-	ス
-	ニ
-	ペッ
-	ト
-	ファ
-	イ
-	ル
-	を
-	開
-	く
-	nnoremap
-	<Space>ns
-	:execute
-	"tabnew\|:NeoSnippetEdit
-	".&filetype<CR>
+	" 現在の filetype のスニペットを編集する為のキーマッピング
+	" こうしておくことでサッと編集や追加などを行うことができる
+	" 以下の設定では新しいタブでスニペットファイルを開く
+	nnoremap <Space>ns :execute "tabnew\|:NeoSnippetEdit ".&filetype<CR>
 endfunction
-unlet
-s:hooks
+unlet s:hooks
 
 
-"
-marching.vim
-let
-s:hooks
-=
-neobundle#get_hooks("vim-marching")
-function!
-	s:hooks.on_post_source(bundle)
-	if
-		!empty(g:marching_clang_command)
-		&&
-		executable(g:marching_clang_command)
-		"
-		非
-		同
-		期
-		で
-		は
-		な
-		く
-		て
-		同
-		期
-		処
-		理
-		で
-		補
-		完
-		す
-		る
-		let
-		g:marching_backend
-		=
-		"sync_clang_command"
+" marching.vim
+let s:hooks = neobundle#get_hooks("vim-marching")
+function! s:hooks.on_post_source(bundle)
+	if !empty(g:marching_clang_command) && executable(g:marching_clang_command)
+		" 非同期ではなくて同期処理で補完する
+		let g:marching_backend = "sync_clang_command"
 	else
-		"
-		clang
-		コ
-		マ
-		ン
-		ド
-		が
-		実
-		行
-		で
-		き
-		な
-		け
-		れ
-		ば
-		wandbox
-		を
-		使
-		用
-		す
-		る
-		let
-		g:marching_backend
-		=
-		"wandbox"
-		let
-		g:marching_clang_command
-		=
-		""
+		" clang コマンドが実行できなければ wandbox を使用する
+		let g:marching_backend = "wandbox"
+		let g:marching_clang_command = ""
 	endif
 
-	"
-	オ
-	プ
-	ショ
-	ン
-	の
-	設
-	定
-	"
-	こ
-	れ
-	は
-	clang
-	の
-	コ
-	マ
-	ン
-	ド
-	に
-	渡
-	さ
-	れ
-	る
-	let
-	g:marching#clang_command#options
-	=
-	{
-				\
-	"cpp"
-	:
-	"-std=gnu++1y"
+	" オプションの設定
+	" これは clang のコマンドに渡される
+	let g:marching#clang_command#options = {
+				\	"cpp" : "-std=gnu++1y"
 				\}
 
 
-	if
-		!neobundle#is_sourced("neocomplete.vim")
+	if !neobundle#is_sourced("neocomplete.vim")
 		return
 	endif
 
-	"
-	neocomplete.vim
-	と
-	併
-	用
-	し
-	て
-	使
-	用
-	す
-	る
-	場
-	合
-	"
-	neocomplete.vim
-	を
-	使
-	用
-	す
-	れ
-	ば
-	自
-	動
-	補
-	完
-	に
-	な
-	る
-	let
-	g:marching_enable_neocomplete
-	=
-	1
+	" neocomplete.vim と併用して使用する場合
+	" neocomplete.vim を使用すれば自動補完になる
+	let g:marching_enable_neocomplete = 1
 
-	if
-		!exists('g:neocomplete#force_omni_input_patterns')
-		let
-		g:neocomplete#force_omni_input_patterns
-		=
-		{}
+	if !exists('g:neocomplete#force_omni_input_patterns')
+		let g:neocomplete#force_omni_input_patterns = {}
 	endif
 
-	let
-	g:neocomplete#force_omni_input_patterns.cpp
-	=
-				\
-	'[^.[:digit:]
-	*\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+	let g:neocomplete#force_omni_input_patterns.cpp =
+				\ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 endfunction
-unlet
-s:hooks
+unlet s:hooks
 
 
+" quickrun.vim
+"let s:hooks = neobundle#get_hooks("vim-quickrun")
+"function! s:hooks.on_source(bundle)
+"	let g:quickrun_config = {
+"\		"_" : {
+"\			"runner" : "vimproc",
+"\			"runner/vimproc/sleep" : 10,
+"\			"runner/vimproc/updatetime" : 500,
+"\			"outputter" : "error",
+"\			"outputter/error/success" : "buffer",
+"\			"outputter/error/error"   : "quickfix",
+"\			"outputter/quickfix/open_cmd" : "copen",
+"\			"outputter/buffer/split" : ":botright 8sp",
+"\		},
+"\
+"\		"cpp/wandbox" : {
+"\			"runner" : "wandbox",
+"\			"runner/wandbox/compiler" : "clang-head",
+"\			"runner/wandbox/options" : "warning,c++1y,boost-1.55",
+"\		},
+"\
+"\		"cpp/g++" : {
+"\			"cmdopt" : "-std=c++0x -Wall",
+"\		},
+"\
+"\		"cpp/clang++" : {
+"\			"cmdopt" : "-std=c++0x -Wall",
+"\		},
+"\
+"\		"cpp/watchdogs_checker" : {
+"\			"type" : "watchdogs_checker/clang++",
+"\		},
+"\	
+"\		"watchdogs_checker/_" : {
+"\			"outputter/quickfix/open_cmd" : "",
+"\		},
+"\	
+"\		"watchdogs_checker/g++" : {
+"\			"cmdopt" : "-Wall",
+"\		},
+"\	
+"\		"watchdogs_checker/clang++" : {
+"\			"cmdopt" : "-Wall",
+"\		},
+"\	}
 "
-quickrun.vim
-let
-s:hooks
-=
-neobundle#get_hooks("vim-quickrun")
-function!
-	s:hooks.on_source(bundle)
-	let
-	g:quickrun_config
-	=
-	{
-				\
-	"_"
-	:
-	{
-				\
-	"runner"
-	:
-	"vimproc",
-				\
-	"runner/vimproc/sleep"
-	:
-	10,
-				\
-	"runner/vimproc/updatetime"
-	:
-	500,
-				\
-	"outputter"
-	:
-	"error",
-				\
-	"outputter/error/success"
-	:
-	"buffer",
-				\
-	"outputter/error/error"
-	:
-	"quickfix",
-				\
-	"outputter/quickfix/open_cmd"
-	:
-	"copen",
-				\
-	"outputter/buffer/split"
-	:
-	":botright
-	8sp",
-				\
-	},
-				\
-				\
-	"cpp/wandbox"
-	:
-	{
-				\
-	"runner"
-	:
-	"wandbox",
-				\
-	"runner/wandbox/compiler"
-	:
-	"clang-head",
-				\
-	"runner/wandbox/options"
-	:
-	"warning,c++1y,boost-1.55",
-				\
-	},
-				\
-				\
-	"cpp/g++"
-	:
-	{
-				\
-	"cmdopt"
-	:
-	"-std=c++0x
-	-Wall",
-				\
-	},
-				\
-				\
-	"cpp/clang++"
-	:
-	{
-				\
-	"cmdopt"
-	:
-	"-std=c++0x
-	-Wall",
-				\
-	},
-				\
-				\
-	"cpp/watchdogs_checker"
-	:
-	{
-				\
-	"type"
-	:
-	"watchdogs_checker/clang++",
-				\
-	},
-				\	
-				\
-	"watchdogs_checker/_"
-	:
-	{
-				\
-	"outputter/quickfix/open_cmd"
-	:
-	"",
-				\
-	},
-				\	
-				\
-	"watchdogs_checker/g++"
-	:
-	{
-				\
-	"cmdopt"
-	:
-	"-Wall",
-				\
-	},
-				\	
-				\
-	"watchdogs_checker/clang++"
-	:
-	{
-				\
-	"cmdopt"
-	:
-	"-Wall",
-				\
-	},
-				\
-	}
-
-	let
-	s:hook
-	=
-	{
-				\
-	"name"
-	:
-	"add_include_option",
-				\
-	"kind"
-	:
-	"hook",
-				\
-	"config"
-	:
-	{
-				\
-	"option_format"
-	:
-	"-I%s"
-				\
-	},
-				\}
-
-	function!
-		s:hook.on_normalized(session,
-		context)
-		"
-		filetype==cpp
-		以
-		外
-		は
-		設
-		定
-		し
-		な
-		い
-		if
-			&filetype
-			!=#
-			"cpp"
-			return
-		endif
-		let
-		paths
-		=
-		filter(split(&path,
-		","),
-		"len(v:val)
-		&&
-		v:val
-		!='.'
-		&&
-		v:val
-		!~
-		$VIM_CPP_STDLIB")
-
-		if
-			len(paths)
-			let
-			a:session.config.cmdopt
-			.=
-			"
-			"
-			.
-			join(map(paths,
-			"printf(self.config.option_format,
-			v:val)"))
-			.
-			"
-			"
-		endif
-	endfunction
-
-	call
-	quickrun#module#register(s:hook,
-	1)
-	unlet
-	s:hook
-
-
-	let
-	s:hook
-	=
-	{
-				\
-	"name"
-	:
-	"clear_quickfix",
-				\
-	"kind"
-	:
-	"hook",
-				\}
-
-	function!
-		s:hook.on_normalized(session,
-		context)
-		call
-		setqflist([])
-	endfunction
-
-	call
-	quickrun#module#register(s:hook,
-	1)
-	unlet
-	s:hook
-
-endfunction
-unlet
-s:hooks
-
-
+"	let s:hook = {
+"	\	"name" : "add_include_option",
+"	\	"kind" : "hook",
+"	\	"config" : {
+"	\		"option_format" : "-I%s"
+"	\	},
+"	\}
 "
-vim-watchdogs
-let
-s:hooks
-=
-neobundle#get_hooks("vim-watchdogs")
-function!
-	s:hooks.on_source(bundle)
-	let
-	g:watchdogs_check_BufWritePost_enable
-	=
-	1
+"	function! s:hook.on_normalized(session, context)
+"		" filetype==cpp 以外は設定しない
+"		if &filetype !=# "cpp"
+"			return
+"		endif
+"		let paths = filter(split(&path, ","), "len(v:val) && v:val !='.' && v:val !~ $VIM_CPP_STDLIB")
+"		
+"		if len(paths)
+"			let a:session.config.cmdopt .= " " . join(map(paths, "printf(self.config.option_format, v:val)")) . " "
+"		endif
+"	endfunction
+"
+"	call quickrun#module#register(s:hook, 1)
+"	unlet s:hook
+"
+"
+"	let s:hook = {
+"	\	"name" : "clear_quickfix",
+"	\	"kind" : "hook",
+"	\}
+"
+"	function! s:hook.on_normalized(session, context)
+"		call setqflist([])
+"	endfunction
+"
+"	call quickrun#module#register(s:hook, 1)
+"	unlet s:hook
+"
+"endfunction
+"unlet s:hooks
+
+
+" vim-watchdogs
+let s:hooks = neobundle#get_hooks("vim-watchdogs")
+function! s:hooks.on_source(bundle)
+	let g:watchdogs_check_BufWritePost_enable = 1
 endfunction
-unlet
-s:hooks
+unlet s:hooks
 
 
 
-if
-	exists("*CppVimrcOnPrePlugin")
-	call
-	CppVimrcOnPrePlugin()
+if exists("*CppVimrcOnPrePlugin")
+	call CppVimrcOnPrePlugin()
 endif
 
 
-call
-neobundle#call_hook('on_source')
+call neobundle#call_hook('on_source')
 
 
 
-if
-	exists("*CppVimrcOnFinish")
-	call
-	CppVimrcOnFinish()
+if exists("*CppVimrcOnFinish")
+	call CppVimrcOnFinish()
 endif
 
 
 
-augroup
-	vimrc-cpp
+augroup vimrc-cpp
 	autocmd!
-	"
-	filetype=cpp
-	が
-	設
-	定
-	さ
-	れ
-	た
-	場
-	合
-	に
-	関
-	数
-	を
-	呼
-	ぶ
-	autocmd
-	FileType
-	cpp
-	call
-	s:cpp()
-	augroup
-		END
+	" filetype=cpp が設定された場合に関数を呼ぶ
+	autocmd FileType cpp call s:cpp()
+augroup END
 
+"vim-latex setting
+let tex_flavor='latex'
+set grepprg=grep\ -nH\ $*
+set shellslash
+let g:Tex_DefaultTargetFormat='pdf'
+"let g:Tex_CompileRule_dvi='platex -d --interaction=nonstopmode $*'
+let g:Tex_CompileRule_dvi='uplatex -sntax=1 --interaction=nonstopmode -file-line-error-style $*'
+let g:Tex_FormatDependency_pdf='dvi,pdf'
+
+let g:Tex_ViewRule_pdf='open -a Preview.app'
+
+let g:Tex_IgnoredWarnings = 
+    \"Underfull\n".
+    \"Overfull\n".
+    \"specifier changed to\n".
+    \"You have requested\n".
+    \"Missing number, treated as zero.\n".
+    \"There were undefined references\n".
+    \"Citation %.%# undefined\n".
+    \"LaTeX Font Warning: Font shape `%s' undefined\n".
+    \"LaTeX Font Warning: Some font shapes were not available, defaults substituted."
