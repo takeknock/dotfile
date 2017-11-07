@@ -36,10 +36,16 @@ NeoBundle 'rkulla/pydiction'
 let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict'
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#goto_assignments_command = "<C-g>"
-let g:jedi#goto_definitions_command = "<C-d>"
+"let g:jedi#goto_definitions_command = "<C-d>"
 let g:jedi#documentation_command = "<C-k>"
 
 "NeoBuldle 'nvie/vim-flake8'
+
+
+"""""""""""""color scheme""""""""""""""""""""
+NeoBundle 'sjl/badwolf'
+NeoBundle 'romainl/Apprentice'
+
 
 " for Indent Line
 NeoBundle 'nathanaelkane/vim-indent-guides'
@@ -49,6 +55,11 @@ NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 
 " Required:
 call neobundle#end()
+
+"" color scheme setting is needed to be after call neobundle#end()
+
+colorscheme apprentice
+syntax on
 
 " Required:
 filetype plugin indent on
